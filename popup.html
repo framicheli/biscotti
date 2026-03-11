@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Biscotti</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --cream: #f5edd6;
+                --biscuit: #d4a86a;
+                --caramel: #b8763a;
+                --espresso: #2c1a0e;
+                --chocolate: #4a2c0a;
+                --golden: #e8b84b;
+                --white-warm: #fbf6ec;
+                --red-terra: #c0392b;
+                --green-sage: #5c7a5a;
+            }
+
+            body {
+                width: 320px;
+                min-height: 380px;
+                background-color: var(--cream);
+                font-family: "DM Mono", monospace;
+                color: var(--espresso);
+                overflow: hidden;
+                position: relative;
+            }
+
+            /* Decorative top border */
+            .top-bar {
+                height: 5px;
+                background: repeating-linear-gradient(90deg, var(--caramel) 0px, var(--caramel) 20px, var(--golden) 20px, var(--golden) 40px, var(--biscuit) 40px, var(--biscuit) 60px);
+            }
+
+            /* Background texture */
+            body::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background-image: radial-gradient(ellipse at 10% 20%, rgba(212, 168, 106, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 90% 80%, rgba(184, 118, 58, 0.12) 0%, transparent 50%);
+                pointer-events: none;
+            }
+
+            .container {
+                padding: 20px 22px 24px;
+                position: relative;
+                z-index: 1;
+            }
+
+            /* Header */
+            .header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 18px;
+                padding-bottom: 16px;
+                border-bottom: 1.5px solid rgba(44, 26, 14, 0.12);
+            }
+
+            .logo {
+                width: 44px;
+                height: 44px;
+                background: var(--espresso);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 22px;
+                flex-shrink: 0;
+                box-shadow: 0 2px 8px rgba(44, 26, 14, 0.25);
+            }
+
+            .header-text h1 {
+                font-family: "Playfair Display", serif;
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--espresso);
+                letter-spacing: -0.3px;
+                line-height: 1;
+            }
+
+            .header-text p {
+                font-size: 9.5px;
+                color: var(--caramel);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                margin-top: 3px;
+                font-weight: 500;
+            }
+
+            /* Current site card */
+            .site-card {
+                background: var(--white-warm);
+                border: 1.5px solid rgba(44, 26, 14, 0.1);
+                border-radius: 10px;
+                padding: 12px 14px;
+                margin-bottom: 16px;
+            }
+
+            .site-label {
+                font-size: 9px;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--caramel);
+                font-weight: 500;
+                margin-bottom: 5px;
+            }
+
+            .site-url {
+                font-size: 12px;
+                color: var(--espresso);
+                font-weight: 500;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            /* Cookie count */
+            .cookie-info {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+
+            .cookie-count-wrap {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .cookie-icon {
+                font-size: 20px;
+            }
+
+            .cookie-count-text {
+                font-size: 11px;
+                color: var(--chocolate);
+            }
+
+            .cookie-count-text strong {
+                display: block;
+                font-size: 24px;
+                font-family: "Playfair Display", serif;
+                color: var(--espresso);
+                line-height: 1;
+            }
+
+            .cookie-count-text span {
+                font-size: 10px;
+                color: var(--caramel);
+                letter-spacing: 0.05em;
+            }
+
+            /* Main delete button */
+            .btn-delete {
+                width: 100%;
+                padding: 14px 20px;
+                background: var(--espresso);
+                color: var(--cream);
+                border: none;
+                border-radius: 10px;
+                font-family: "DM Mono", monospace;
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.05em;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                transition: all 0.18s ease;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 3px 12px rgba(44, 26, 14, 0.3);
+            }
+
+            .btn-delete::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+            }
+
+            .btn-delete:hover {
+                background: var(--chocolate);
+                transform: translateY(-1px);
+                box-shadow: 0 5px 18px rgba(44, 26, 14, 0.35);
+            }
+
+            .btn-delete:active {
+                transform: translateY(0px);
+                box-shadow: 0 2px 8px rgba(44, 26, 14, 0.25);
+            }
+
+            .btn-delete:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            .btn-delete .btn-icon {
+                font-size: 16px;
+            }
+
+            /* Status message */
+            .status {
+                margin-top: 14px;
+                padding: 10px 14px;
+                border-radius: 8px;
+                font-size: 11px;
+                display: none;
+                align-items: center;
+                gap: 8px;
+                animation: slideIn 0.25s ease;
+            }
+
+            .status.success {
+                display: flex;
+                background: rgba(92, 122, 90, 0.12);
+                border: 1px solid rgba(92, 122, 90, 0.25);
+                color: var(--green-sage);
+            }
+
+            .status.error {
+                display: flex;
+                background: rgba(192, 57, 43, 0.1);
+                border: 1px solid rgba(192, 57, 43, 0.2);
+                color: var(--red-terra);
+            }
+
+            .status.info {
+                display: flex;
+                background: rgba(184, 118, 58, 0.1);
+                border: 1px solid rgba(184, 118, 58, 0.2);
+                color: var(--caramel);
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-6px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Divider */
+            .divider {
+                height: 1px;
+                background: rgba(44, 26, 14, 0.1);
+                margin: 18px 0 14px;
+            }
+
+            /* Footer */
+            .footer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .footer-motto {
+                font-family: "Playfair Display", serif;
+                font-style: italic;
+                font-size: 10px;
+                color: var(--caramel);
+                opacity: 0.8;
+            }
+
+            .footer-version {
+                font-size: 9px;
+                color: rgba(44, 26, 14, 0.3);
+                letter-spacing: 0.05em;
+            }
+
+            /* Loading spinner */
+            .spinner {
+                width: 14px;
+                height: 14px;
+                border: 2px solid rgba(245, 237, 214, 0.3);
+                border-top-color: var(--cream);
+                border-radius: 50%;
+                animation: spin 0.7s linear infinite;
+                display: none;
+            }
+
+            .btn-delete.loading .spinner {
+                display: block;
+            }
+            .btn-delete.loading .btn-icon,
+            .btn-delete.loading .btn-label {
+                opacity: 0.5;
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top-bar"></div>
+        <div class="container">
+            <div class="header">
+                <div class="logo">🍪</div>
+                <div class="header-text">
+                    <h1>Biscotti</h1>
+                    <p>Cookie Manager</p>
+                </div>
+            </div>
+
+            <div class="site-card">
+                <div class="site-label">Current page</div>
+                <div class="site-url" id="currentSite">Loading…</div>
+            </div>
+
+            <div class="cookie-info">
+                <div class="cookie-count-wrap">
+                    <span class="cookie-icon">🍫</span>
+                    <div class="cookie-count-text">
+                        <strong id="cookieCount">—</strong>
+                        <span>cookies found</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-delete" id="deleteBtn">
+                <span class="btn-icon">🗑️</span>
+                <span class="btn-label">Delete Cookies</span>
+                <div class="spinner"></div>
+            </button>
+
+            <div class="status" id="statusMsg">
+                <span id="statusIcon"></span>
+                <span id="statusText"></span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="footer">
+                <span class="footer-version"></span>
+            </div>
+        </div>
+        <script src="popup.js"></script>
+    </body>
+</html>

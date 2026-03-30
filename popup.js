@@ -1,5 +1,6 @@
 // Biscotti - Cookie Manager
 // Delete cookies from the current page
+const api = typeof browser !== "undefined" ? browser : chrome;
 
 let currentTab = null;
 let currentDomain = null;
@@ -61,7 +62,7 @@ async function getCookiesForUrl(url) {
         domainVariants.push({ domain: `.${rootDomain}` });
     }
 
-    const sets = await Promise.all(domainVariants.map((q) => chrome.cookies.getAll(q).catch(() => [])));
+    const sets = await Promise.all(domainVariants.map((q) => api.cookies.getAll(q).catch(() => [])));
 
     // Deduplicate by (name + domain + path + storeId)
     const seen = new Set();
@@ -88,9 +89,9 @@ async function deleteCookie(cookie) {
     for (const scheme of schemes) {
         const cookieUrl = `${scheme}://${domain}${cookie.path || "/"}`;
         try {
-            await chrome.cookies.remove({ url: cookieUrl, name: cookie.name, storeId: cookie.storeId });
+            await api.cookies.remove({ url: cookieUrl, name: cookie.name, storeId: cookie.storeId });
         } catch {
-            // Silently ignore individual failures; we'll verify the count after
+            // Skip
         }
     }
 }
@@ -99,10 +100,10 @@ async function deleteCookie(cookie) {
 
 async function init() {
     try {
-        const { version } = chrome.runtime.getManifest();
+        const { version } = api.runtime.getManifest();
         document.querySelector(".footer-version").textContent = `v${version}`;
 
-        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        const [tab] = await api.tabs.query({ active: true, currentWindow: true });
         currentTab = tab;
 
         if (!tab || !tab.url || tab.url.startsWith("chrome://") || tab.url.startsWith("chrome-extension://")) {
